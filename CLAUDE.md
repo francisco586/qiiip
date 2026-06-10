@@ -2,12 +2,27 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Current State
+## Repository Purpose
 
-This repository is currently empty — it contains no source code, build configuration, or documentation yet.
+This repository distributes a starter Claude Code configuration. There is no
+application code, build system, or test suite.
 
-When code is added to this repository, regenerate this file (e.g. with `/init`) so it documents:
+## Structure
 
-- Build, lint, and test commands (including how to run a single test)
-- High-level architecture and structure
-- Project-specific conventions
+- `dist/claude-code/.claude/` — the distributable configuration:
+  - `settings.json` — permissions allowlist (read-only commands only)
+  - `commands/` — example slash commands (`/commit`, `/review`)
+  - `agents/` — example subagent (`code-explorer`, read-only)
+- `dist/claude-code/README.md` — installation and customization docs
+
+## Installation (for consumers)
+
+```sh
+cp -r dist/claude-code/.claude your-project/
+```
+
+## Conventions
+
+- Keep everything in `.claude/` generic — no project-specific paths or tools.
+- Never allowlist destructive commands in `settings.json`.
+- Update `dist/claude-code/README.md` whenever files are added to `.claude/`.

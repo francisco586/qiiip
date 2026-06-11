@@ -11,6 +11,19 @@ sobre la foto y no se podía modificar. Aquí está reconstruida en capas editab
 | `fondo-limpio.jpg` | La foto **sin ningún texto** (cielo y fondo reconstruidos) |
 | `poster.svg` | Póster vectorial: textos, logo e iconos como capas editables |
 | `poster.html` | Versión editable en el navegador (clic sobre cualquier texto y escribe) |
+| `poster.pdf` | El póster en PDF (texto seleccionable) |
+| `poster-canva.pdf` | Variante usada para importar a Canva (logo como imagen) |
+| `logo.png` | Logo LUSSO recreado, con fondo transparente |
+| `recorte-planta.png`, `recorte-lampara.png` | Recortes con transparencia que tapan el título, como en el original |
+| `vista-previa.png` | Render del póster recreado |
+
+## Versión en Canva (recomendada)
+
+El póster ya está importado en tu Canva como diseño editable de 1200×1500:
+**"LUSSO — Póster editable"** → https://www.canva.com/d/ZJA3FyiP1aekMfD
+
+Todos los textos se editan con doble clic; el fondo, el logo y los recortes
+son imágenes independientes.
 
 ## Cómo editarlo
 

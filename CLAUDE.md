@@ -4,13 +4,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-WhatsApp bot that answers incoming messages with Claude, via Meta's official
-WhatsApp Business Cloud API. Single Flask app (`app.py`):
+WhatsApp bot that answers incoming messages with Claude. Two interchangeable
+Flask apps selected by `wsgi.py` at import time:
 
-- `GET /webhook` — Meta's webhook verification handshake.
-- `POST /webhook` — receives messages, dedupes by message ID, replies via the
-  Graph API after calling the Claude API (`claude-opus-4-8`, adaptive thinking).
-- Per-phone-number conversation history is kept in memory (lost on restart).
+- `app.py` — Meta's official WhatsApp Business Cloud API (`GET /webhook`
+  verification handshake + `POST /webhook` JSON events, replies via Graph API).
+- `app_twilio.py` — Twilio WhatsApp (sandbox or own number); `POST /webhook`
+  form-encoded, replies via Twilio REST API. Used when `TWILIO_ACCOUNT_SID`
+  is set.
+
+Both dedupe by message ID, call the Claude API (`claude-opus-4-8`, adaptive
+thinking) in a background thread, and keep per-phone-number conversation
+history in memory (lost on restart).
 
 Setup instructions (in Spanish) live in `README.md`.
 

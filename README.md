@@ -13,6 +13,28 @@ WhatsApp ◀─respuesta── Meta Cloud API ◀──────────�
 > hacer que te bloqueen el número. La Cloud API es la vía oficial y tiene
 > capa gratuita.
 
+## Atajo: Twilio Sandbox (la opción más fácil)
+
+Si la consola de Meta te resulta engorrosa, el sandbox de WhatsApp de
+[Twilio](https://www.twilio.com) es mucho más rápido de configurar (ideal
+desde el teléfono):
+
+1. Crea una cuenta en twilio.com y verifica tu correo y teléfono.
+2. En la consola: **Messaging → Try it out → Send a WhatsApp message**.
+   Verás el número del sandbox y un código tipo `join algo-algo`.
+3. Desde tu WhatsApp, envía ese `join algo-algo` al número del sandbox.
+4. Copia el **Account SID** y el **Auth Token** (portada de la consola).
+5. Despliega este repo (Railway, etc.) con las variables
+   `ANTHROPIC_API_KEY`, `TWILIO_ACCOUNT_SID` y `TWILIO_AUTH_TOKEN`
+   (el entrypoint `wsgi.py` detecta Twilio automáticamente).
+6. En la página del sandbox, en **"When a message comes in"**, pega
+   `https://TU-URL/webhook` (método POST) y guarda.
+7. Escríbele al número del sandbox: Claude responde.
+
+Limitaciones del sandbox: el número es compartido y, tras 72 h sin
+actividad, debes reenviar el `join`. Para algo permanente usa la Cloud API
+de Meta (abajo) o un número propio de Twilio.
+
 ## Requisitos
 
 1. **API key de Anthropic** — créala en <https://platform.claude.com>.

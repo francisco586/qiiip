@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aurora de partículas</title>
+<style>
+  html, body {
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
+    background: #05060f;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+  canvas {
+    display: block;
+  }
+  .hint {
+    position: fixed;
+    bottom: 16px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.35);
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    pointer-events: none;
+    animation: fade 4s ease 2s forwards;
+  }
+  @keyframes fade {
+    to { opacity: 0; }
+  }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div class="hint">mueve el ratón · toca la pantalla</div>
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+
+let W, H;
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resize);
+resize();
+
+const mouse = { x: W / 2, y: H / 2, active: false };
+window.addEventListener('pointermove', e => {
+  mouse.x = e.clientX;
+  mouse.y = e.clientY;
+  mouse.active = true;
+});
+window.addEventListener('pointerleave', () => { mouse.active = false; });
+
+const N = Math.min(420, Math.floor(W * H / 3500));
+const particles = [];
+
+for (let i = 0; i < N; i++) {
+  particles.push({
+    x: Math.random() * W,
+    y: Math.random() * H,
+    vx: 0,
+    vy: 0,
+    hue: Math.random() * 360,
+    size: 0.6 + Math.random() * 1.8,
+    seed: Math.random() * 1000
+  });
+}
+
+// Campo de flujo: ángulo suave que varía en espacio y tiempo
+function flowAngle(x, y, t) {
+  return (
+    Math.sin(x * 0.0016 + t * 0.4) +
+    Math.cos(y * 0.0021 - t * 0.3) +
+    Math.sin((x + y) * 0.0009 + t * 0.2)
+  ) * Math.PI;
+}
+
+let t = 0;
+function frame() {
+  t += 0.008;
+
+  // Estela: se desvanece poco a poco en lugar de borrarse
+  ctx.fillStyle = 'rgba(5, 6, 15, 0.08)';
+  ctx.fillRect(0, 0, W, H);
+
+  ctx.globalCompositeOperation = 'lighter';
+
+  for (const p of particles) {
+    const a = flowAngle(p.x, p.y, t + p.seed * 0.001);
+    p.vx += Math.cos(a) * 0.06;
+    p.vy += Math.sin(a) * 0.06;
+
+    // El cursor atrae suavemente a las partículas cercanas
+    if (mouse.active) {
+      const dx = mouse.x - p.x;
+      const dy = mouse.y - p.y;
+      const d2 = dx * dx + dy * dy;
+      if (d2 < 200 * 200) {
+        const f = 0.9 / (1 + d2 * 0.002);
+        p.vx += dx * f * 0.01;
+        p.vy += dy * f * 0.01;
+      }
+    }
+
+    p.vx *= 0.96;
+    p.vy *= 0.96;
+    p.x += p.vx;
+    p.y += p.vy;
+
+    // Envolver en los bordes
+    if (p.x < -10) p.x = W + 10;
+    if (p.x > W + 10) p.x = -10;
+    if (p.y < -10) p.y = H + 10;
+    if (p.y > H + 10) p.y = -10;
+
+    p.hue = (p.hue + 0.15) % 360;
+    const speed = Math.min(1, Math.hypot(p.vx, p.vy) * 0.5);
+
+    ctx.beginPath();
+    ctx.fillStyle = `hsla(${p.hue}, 85%, ${55 + speed * 25}%, ${0.25 + speed * 0.5})`;
+    ctx.arc(p.x, p.y, p.size + speed * 1.5, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  ctx.globalCompositeOperation = 'source-over';
+  requestAnimationFrame(frame);
+}
+
+frame();
+</script>
+</body>
+</html>

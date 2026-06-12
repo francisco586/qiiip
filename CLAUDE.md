@@ -21,6 +21,10 @@ Single-page animated landing site built with React 19, Vite, and framer-motion.
 - `src/index.css` — all styles; CSS custom properties for the palette (dusty blue-grey background, lime accent) live in `:root`
 - `src/assets/hero.png` — AI-generated hero/product photo, imported from `App.jsx` so Vite rewrites the URL
 
+## Working with the user
+
+- Always show the HTML/markup of any page changes directly in the chat response (the user wants to see the code, not just a description).
+
 ## Deployment
 
 `.github/workflows/deploy.yml` builds with `vite build --base=/qiiip/` and deploys `dist/` to GitHub Pages. It only triggers on pushes to the branch named in its `on.push.branches` filter (plus manual `workflow_dispatch`), so update that filter when the deploy branch changes.

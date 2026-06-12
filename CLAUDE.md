@@ -2,12 +2,25 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Current State
+## Commands
 
-This repository is currently empty — it contains no source code, build configuration, or documentation yet.
+- `npm ci` — install dependencies
+- `npm run dev` — start the Vite dev server
+- `npm run build` — production build into `dist/`
+- `npm run preview` — serve the production build locally
 
-When code is added to this repository, regenerate this file (e.g. with `/init`) so it documents:
+There are no tests or linters configured.
 
-- Build, lint, and test commands (including how to run a single test)
-- High-level architecture and structure
-- Project-specific conventions
+## Architecture
+
+Single-page animated landing site built with React 19, Vite, and framer-motion.
+
+- `index.html` — entry point; loads the Manrope font from Google Fonts
+- `src/main.jsx` — React root
+- `src/App.jsx` — the whole page: a full-viewport hero for the "Forma Chair" furniture brand (nav, animated headline, lead + catalog button, floating product card) with framer-motion entrance animations and mouse parallax on the background
+- `src/index.css` — all styles; CSS custom properties for the palette (dusty blue-grey background, lime accent) live in `:root`
+- `src/assets/hero.png` — AI-generated hero/product photo, imported from `App.jsx` so Vite rewrites the URL
+
+## Deployment
+
+`.github/workflows/deploy.yml` builds with `vite build --base=/qiiip/` and deploys `dist/` to GitHub Pages. It only triggers on pushes to the branch named in its `on.push.branches` filter (plus manual `workflow_dispatch`), so update that filter when the deploy branch changes.

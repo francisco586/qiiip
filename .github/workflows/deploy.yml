@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [claude/claude-md-docs-dmf62h]
+    branches: [claude/claude-md-docs-dmf62h, claude/chair-design-cnrhjj]
   workflow_dispatch:
 
 permissions:

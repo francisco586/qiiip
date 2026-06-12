@@ -27,4 +27,4 @@ Single-page animated landing site built with React 19, Vite, and framer-motion.
 
 ## Deployment
 
-`.github/workflows/deploy.yml` builds with `vite build --base=/qiiip/` and deploys `dist/` to GitHub Pages. It only triggers on pushes to the branch named in its `on.push.branches` filter (plus manual `workflow_dispatch`), so update that filter when the deploy branch changes.
+`.github/workflows/deploy.yml` builds with `vite build --base=/qiiip/` and pushes `dist/` to the `gh-pages` branch, which GitHub Pages serves at https://francisco586.github.io/qiiip/ (Pages source in repo settings: "Deploy from a branch" → `gh-pages`). It triggers on pushes to the branch named in its `on.push.branches` filter (plus manual `workflow_dispatch`), so update that filter when the deploy branch changes.

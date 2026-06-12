@@ -3,134 +3,355 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aurora de partículas</title>
+<title>Beautiful Legend — Colección de sillas</title>
 <style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --sky-top: #b9d3e6;
+    --sky-bottom: #e6eef3;
+    --peach: #f2d8c6;
+    --peach-deep: #eccab4;
+    --pink: #f6e3da;
+    --sand: #ece6dc;
+    --sand-deep: #d9d0c1;
+    --stone: #cfc8bc;
+    --ink: #1d1d1f;
+  }
+
   html, body {
-    margin: 0;
     height: 100%;
     overflow: hidden;
-    background: #05060f;
-    font-family: system-ui, -apple-system, sans-serif;
+    font-family: "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+    color: var(--ink);
+    background: var(--sky-bottom);
   }
-  canvas {
-    display: block;
+
+  .hero {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
   }
-  .hint {
-    position: fixed;
-    bottom: 16px;
-    left: 0;
-    right: 0;
-    text-align: center;
-    color: rgba(255, 255, 255, 0.35);
-    font-size: 13px;
+
+  /* ----- escena: cielo, montañas, suelo ----- */
+  .sky {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(var(--sky-top), var(--sky-bottom) 70%);
+  }
+
+  .mountains {
+    position: absolute;
+    left: 0; right: 0;
+    bottom: 36%;
+    height: 26%;
+    opacity: 0.85;
+  }
+  .mountains svg { width: 100%; height: 100%; display: block; }
+
+  .floor {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 38%;
+    background: linear-gradient(var(--sand) 0%, var(--sand-deep) 100%);
+  }
+  .floor::before {
+    /* línea de horizonte suavemente difuminada */
+    content: "";
+    position: absolute;
+    top: -14px; left: 0; right: 0;
+    height: 14px;
+    background: linear-gradient(transparent, rgba(180, 168, 148, 0.35));
+  }
+
+  /* ----- elementos arquitectónicos ----- */
+  .panel-left {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 13vw;
+    background: linear-gradient(100deg, var(--peach-deep), var(--peach));
+    box-shadow: 18px 0 50px rgba(214, 168, 132, 0.25);
+  }
+
+  .panel-right {
+    position: absolute;
+    right: 4vw; bottom: 30%;
+    width: 6vw; height: 52vh;
+    background: linear-gradient(80deg, #e9b9a4, #f3d4c2);
+    border-radius: 3vw 3vw 0 0;
+  }
+
+  .slab {
+    position: absolute;
+    left: 50%; bottom: 33%;
+    width: 30vw; height: 56vh;
+    transform: translateX(-12%);
+    background: linear-gradient(115deg, #d8d2c6, var(--stone) 60%, #c2bbac);
+    border-radius: 4px;
+    box-shadow: -30px 30px 60px rgba(120, 110, 95, 0.18);
+  }
+  .slab .hole {
+    position: absolute;
+    top: 12%; right: 12%;
+    width: 11vw; height: 11vw;
+    border-radius: 50%;
+    background: linear-gradient(var(--sky-top), #dce9f1);
+    box-shadow: inset 6px 8px 18px rgba(100, 95, 85, 0.35);
+  }
+
+  /* nubes suaves a la deriva */
+  .cloud {
+    position: absolute;
+    height: 9vh;
+    width: 34vw;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    filter: blur(28px);
+    animation: drift linear infinite;
+  }
+  .cloud.c1 { top: 9%;  left: -36vw; animation-duration: 75s; }
+  .cloud.c2 { top: 20%; left: -36vw; animation-duration: 110s; animation-delay: -40s; }
+  @keyframes drift {
+    to { transform: translateX(172vw); }
+  }
+
+  /* ----- cabecera ----- */
+  header {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 28px 4vw 0 17vw;
+  }
+  .brand {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 0.34em;
+  }
+  nav { display: flex; gap: 2.4vw; }
+  nav a {
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 14px;
     letter-spacing: 0.08em;
-    pointer-events: none;
-    animation: fade 4s ease 2s forwards;
+    opacity: 0.7;
+    transition: opacity 0.25s;
   }
-  @keyframes fade {
-    to { opacity: 0; }
+  nav a:hover { opacity: 1; }
+
+  /* ----- texto ----- */
+  .copy {
+    position: absolute;
+    z-index: 30;
+    top: 16%;
+    right: 5vw;
+    max-width: 34vw;
+    text-align: right;
+    animation: rise 1.2s ease both 0.2s;
+  }
+  .copy h1 {
+    font-size: clamp(28px, 3.6vw, 56px);
+    font-weight: 800;
+    letter-spacing: 0.01em;
+  }
+  .copy p {
+    margin-top: 14px;
+    font-size: clamp(13px, 1.05vw, 17px);
+    line-height: 1.7;
+    opacity: 0.65;
+  }
+  .copy .cta {
+    display: inline-block;
+    margin-top: 26px;
+    padding: 13px 34px;
+    border: 1.5px solid var(--ink);
+    border-radius: 999px;
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 14px;
+    letter-spacing: 0.12em;
+    transition: background 0.3s, color 0.3s;
+  }
+  .copy .cta:hover { background: var(--ink); color: #fff; }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ----- sillas ----- */
+  .chair {
+    position: absolute;
+    z-index: 20;
+    bottom: 0;
+    animation: enter 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+    will-change: transform;
+  }
+  .chair img {
+    display: block;
+    width: 100%;
+    animation: float ease-in-out infinite;
+    will-change: transform;
+    transition: transform 0.4s ease;
+  }
+  .chair:hover img { transform: translateY(-14px) rotate(-2deg); }
+  .chair .shadow {
+    position: absolute;
+    left: 8%;
+    bottom: -2.5vh;
+    width: 84%;
+    height: 3.2vh;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center, rgba(70, 60, 50, 0.30), transparent 70%);
+    animation: shadow ease-in-out infinite;
+  }
+  .chair:hover .shadow { opacity: 0.55; transform: scale(0.92); }
+
+  /* posiciones, tamaños y compases distintos para cada silla */
+  .chair.one   { left: 16vw; bottom: 9vh;  width: 17vw; animation-delay: 0.15s; }
+  .chair.two   { left: 33vw; bottom: 7vh;  width: 13vw; animation-delay: 0.35s; }
+  .chair.three { left: 50vw; bottom: 10vh; width: 12.5vw; animation-delay: 0.55s; }
+  .chair.four  { left: 66vw; bottom: 6.5vh; width: 18vw; animation-delay: 0.75s; }
+
+  .chair.one img,   .chair.one .shadow   { animation-duration: 5.2s; }
+  .chair.two img,   .chair.two .shadow   { animation-duration: 6.1s; animation-delay: -1.6s; }
+  .chair.three img, .chair.three .shadow { animation-duration: 7.0s; animation-delay: -3.2s; }
+  .chair.four img,  .chair.four .shadow  { animation-duration: 5.7s; animation-delay: -0.8s; }
+
+  @keyframes enter {
+    from { opacity: 0; transform: translateY(9vh); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0)      rotate(0deg); }
+    50%      { transform: translateY(-1.6vh) rotate(1.1deg); }
+  }
+  @keyframes shadow {
+    0%, 100% { transform: scale(1);    opacity: 1; }
+    50%      { transform: scale(0.88); opacity: 0.6; }
+  }
+
+  /* indicador de scroll */
+  .scroll-cue {
+    position: absolute;
+    z-index: 30;
+    bottom: 22px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    opacity: 0.45;
+    animation: bob 2.4s ease-in-out infinite;
+  }
+  @keyframes bob {
+    0%, 100% { transform: translate(-50%, 0); }
+    50%      { transform: translate(-50%, 7px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+
+  @media (max-width: 760px) {
+    header { padding-left: 6vw; }
+    nav { display: none; }
+    .copy { max-width: 80vw; top: 12%; }
+    .chair.one   { left: 4vw;  width: 32vw; }
+    .chair.two   { left: 36vw; width: 25vw; }
+    .chair.three { display: none; }
+    .chair.four  { left: 62vw; width: 34vw; }
+    .slab { width: 52vw; }
+    .slab .hole { width: 20vw; height: 20vw; }
   }
 </style>
 </head>
 <body>
-<canvas id="c"></canvas>
-<div class="hint">mueve el ratón · toca la pantalla</div>
+<div class="hero" id="hero">
+
+  <div class="sky parallax" data-depth="2"></div>
+
+  <div class="cloud c1"></div>
+  <div class="cloud c2"></div>
+
+  <div class="mountains parallax" data-depth="6">
+    <svg viewBox="0 0 1440 220" preserveAspectRatio="none">
+      <path d="M0,220 L0,150 L180,70 L340,160 L520,90 L700,170 L900,60 L1100,150 L1280,100 L1440,160 L1440,220 Z"
+            fill="#c8b9a8" opacity="0.55"/>
+      <path d="M0,220 L0,185 L240,120 L460,190 L660,140 L880,200 L1080,130 L1300,190 L1440,150 L1440,220 Z"
+            fill="#b7a896" opacity="0.45"/>
+    </svg>
+  </div>
+
+  <div class="floor"></div>
+
+  <div class="slab parallax" data-depth="10"><div class="hole"></div></div>
+  <div class="panel-right parallax" data-depth="14"></div>
+  <div class="panel-left"></div>
+
+  <header>
+    <div class="brand">QIIIP</div>
+    <nav>
+      <a href="#">Colección</a>
+      <a href="#">Diseño</a>
+      <a href="#">Estudio</a>
+      <a href="#">Contacto</a>
+    </nav>
+  </header>
+
+  <div class="copy">
+    <h1>Beautiful legend</h1>
+    <p>Si el polvo del mundo te abruma, deja que el diseño
+       renueve tu vida. Sillas pensadas para habitar el tiempo
+       con calma, color y carácter.</p>
+    <a class="cta" href="#">VER COLECCIÓN</a>
+  </div>
+
+  <div class="chair one parallax" data-depth="26">
+    <img src="assets/chair1.png" alt="Silla de oficina giratoria tapizada en beige">
+    <div class="shadow"></div>
+  </div>
+  <div class="chair two parallax" data-depth="34">
+    <img src="assets/chair2.png" alt="Silla de comedor tapizada en terracota con patas de madera">
+    <div class="shadow"></div>
+  </div>
+  <div class="chair three parallax" data-depth="22">
+    <img src="assets/chair3.png" alt="Taburete alto tapizado en arena con estructura metálica">
+    <div class="shadow"></div>
+  </div>
+  <div class="chair four parallax" data-depth="38">
+    <img src="assets/chair4.png" alt="Silla con reposabrazos tapizada en amarillo mostaza">
+    <div class="shadow"></div>
+  </div>
+
+  <div class="scroll-cue">DESLIZA</div>
+</div>
+
 <script>
-const canvas = document.getElementById('c');
-const ctx = canvas.getContext('2d');
+// Parallax: cada capa se desplaza según su profundidad al mover el ratón
+const layers = document.querySelectorAll('.parallax');
+const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-let W, H;
-function resize() {
-  W = canvas.width = window.innerWidth;
-  H = canvas.height = window.innerHeight;
-}
-window.addEventListener('resize', resize);
-resize();
+if (!reduced) {
+  let tx = 0, ty = 0, cx = 0, cy = 0;
 
-const mouse = { x: W / 2, y: H / 2, active: false };
-window.addEventListener('pointermove', e => {
-  mouse.x = e.clientX;
-  mouse.y = e.clientY;
-  mouse.active = true;
-});
-window.addEventListener('pointerleave', () => { mouse.active = false; });
-
-const N = Math.min(420, Math.floor(W * H / 3500));
-const particles = [];
-
-for (let i = 0; i < N; i++) {
-  particles.push({
-    x: Math.random() * W,
-    y: Math.random() * H,
-    vx: 0,
-    vy: 0,
-    hue: Math.random() * 360,
-    size: 0.6 + Math.random() * 1.8,
-    seed: Math.random() * 1000
+  window.addEventListener('pointermove', e => {
+    tx = (e.clientX / window.innerWidth) - 0.5;
+    ty = (e.clientY / window.innerHeight) - 0.5;
   });
-}
 
-// Campo de flujo: ángulo suave que varía en espacio y tiempo
-function flowAngle(x, y, t) {
-  return (
-    Math.sin(x * 0.0016 + t * 0.4) +
-    Math.cos(y * 0.0021 - t * 0.3) +
-    Math.sin((x + y) * 0.0009 + t * 0.2)
-  ) * Math.PI;
-}
-
-let t = 0;
-function frame() {
-  t += 0.008;
-
-  // Estela: se desvanece poco a poco en lugar de borrarse
-  ctx.fillStyle = 'rgba(5, 6, 15, 0.08)';
-  ctx.fillRect(0, 0, W, H);
-
-  ctx.globalCompositeOperation = 'lighter';
-
-  for (const p of particles) {
-    const a = flowAngle(p.x, p.y, t + p.seed * 0.001);
-    p.vx += Math.cos(a) * 0.06;
-    p.vy += Math.sin(a) * 0.06;
-
-    // El cursor atrae suavemente a las partículas cercanas
-    if (mouse.active) {
-      const dx = mouse.x - p.x;
-      const dy = mouse.y - p.y;
-      const d2 = dx * dx + dy * dy;
-      if (d2 < 200 * 200) {
-        const f = 0.9 / (1 + d2 * 0.002);
-        p.vx += dx * f * 0.01;
-        p.vy += dy * f * 0.01;
-      }
+  (function tick() {
+    cx += (tx - cx) * 0.06;
+    cy += (ty - cy) * 0.06;
+    for (const el of layers) {
+      const d = parseFloat(el.dataset.depth);
+      el.style.translate = `${-cx * d}px ${-cy * d * 0.5}px`;
     }
-
-    p.vx *= 0.96;
-    p.vy *= 0.96;
-    p.x += p.vx;
-    p.y += p.vy;
-
-    // Envolver en los bordes
-    if (p.x < -10) p.x = W + 10;
-    if (p.x > W + 10) p.x = -10;
-    if (p.y < -10) p.y = H + 10;
-    if (p.y > H + 10) p.y = -10;
-
-    p.hue = (p.hue + 0.15) % 360;
-    const speed = Math.min(1, Math.hypot(p.vx, p.vy) * 0.5);
-
-    ctx.beginPath();
-    ctx.fillStyle = `hsla(${p.hue}, 85%, ${55 + speed * 25}%, ${0.25 + speed * 0.5})`;
-    ctx.arc(p.x, p.y, p.size + speed * 1.5, 0, Math.PI * 2);
-    ctx.fill();
-  }
-
-  ctx.globalCompositeOperation = 'source-over';
-  requestAnimationFrame(frame);
+    requestAnimationFrame(tick);
+  })();
 }
-
-frame();
 </script>
 </body>
 </html>

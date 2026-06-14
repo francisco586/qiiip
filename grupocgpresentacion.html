@@ -229,6 +229,30 @@ img{display:block;max-width:100%}
 .dots a:hover{background:var(--vermilion)}
 @media(max-width:900px){.dots{display:none}}
 
+/* ====== TOP BAR · LIQUID GLASS (aparece al bajar de la portada) ====== */
+.topbar{
+  position:fixed;top:0;left:0;right:0;z-index:8500;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.95vw 4vw;
+  /* cristal líquido: tinte translúcido + desenfoque + saturación */
+  background:linear-gradient(180deg,rgba(243,240,233,.66),rgba(243,240,233,.46));
+  -webkit-backdrop-filter:blur(22px) saturate(180%);
+  backdrop-filter:blur(22px) saturate(180%);
+  border-bottom:1px solid rgba(255,255,255,.45);
+  /* brillo especular arriba + sombra suave abajo */
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.6),inset 0 -1px 0 rgba(12,12,13,.04),0 10px 30px rgba(12,12,13,.08);
+  transform:translateY(-101%);opacity:0;pointer-events:none;
+  transition:transform .55s var(--ease),opacity .4s var(--ease);
+}
+.topbar::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(255,255,255,.18),transparent 55%)}
+body.scrolled .topbar{transform:none;opacity:1;pointer-events:auto}
+.topbar .bar-brand{font-family:'Fraunces',serif;font-weight:600;font-size:1.1vw;letter-spacing:-.01em;color:var(--ink);position:relative;z-index:1}
+.topbar .bar-brand small{font-family:'Inter Tight';font-weight:400;font-size:.58vw;letter-spacing:.22em;text-transform:uppercase;opacity:.5;margin-left:.55em}
+.topbar .bar-sec{font-size:.62vw;letter-spacing:.22em;text-transform:uppercase;color:var(--mute-d);font-weight:500;position:relative;z-index:1}
+/* al mostrarse la barra, ocultamos las cabeceras internas para no duplicar la marca */
+body.scrolled .s-head{opacity:0;transition:opacity .4s var(--ease)}
+
 /* reveal */
 [data-rev]{opacity:0;transform:translateY(30px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
 [data-rev].in{opacity:1;transform:none}
@@ -281,6 +305,9 @@ img{display:block;max-width:100%}
   .proc-step .rn{font-size:1.8rem}.proc-step h3{font-size:1.2rem}.proc-step p{font-size:.82rem}.proc-step .et,.proc-step .deliver{font-size:.55rem}
   .cta-inner h2{font-size:2.8rem}.cta-foot{grid-template-columns:repeat(2,1fr);gap:1.2rem}.cta-foot .k{font-size:.55rem}.cta-foot .v,.cta-foot a{font-size:.82rem}
   .s-foot{padding-top:1.4rem}.s-foot .ftxt{font-size:.52rem}.s-foot .fpag{font-size:.55rem}
+  .topbar{padding:.85rem 6vw}
+  .topbar .bar-brand{font-size:1rem}.topbar .bar-brand small{display:none}
+  .topbar .bar-sec{font-size:.55rem}
 }
 
 @media(prefers-reduced-motion:reduce){
@@ -316,6 +343,11 @@ body.locked{animation:scrollSafety 0s linear 4s forwards}
 
 <div class="progress"><span id="prog"></span></div>
 <nav class="dots" id="dots"></nav>
+
+<div class="topbar" id="topbar" aria-hidden="true">
+  <span class="bar-brand">Grupo CG<small>Presentación 2026</small></span>
+  <span class="bar-sec" id="barSec"></span>
+</div>
 
 <main class="deck" id="deck">
 
@@ -698,7 +730,18 @@ setTimeout(function(){
   document.body.classList.remove('locked');
 },3500);
 /* PROGRESS */
-(function(){const p=document.getElementById('prog');addEventListener('scroll',()=>{const h=document.documentElement.scrollHeight-innerHeight;p.style.transform='scaleX('+(scrollY/h)+')';},{passive:true});})();
+(function(){
+  const p=document.getElementById('prog'),s1=document.getElementById('s1');
+  function onScroll(){
+    const h=document.documentElement.scrollHeight-innerHeight;
+    p.style.transform='scaleX('+(scrollY/h)+')';
+    /* la barra Liquid Glass aparece al dejar atrás la portada */
+    document.body.classList.toggle('scrolled', scrollY > (s1.offsetHeight-80));
+  }
+  addEventListener('scroll',onScroll,{passive:true});
+  addEventListener('resize',onScroll,{passive:true});
+  onScroll();
+})();
 /* REVEAL */
 (function(){
   const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');
@@ -717,7 +760,8 @@ setTimeout(function(){
   const deck=document.getElementById('deck'),slides=[...deck.querySelectorAll('.slide')],dots=document.getElementById('dots');
   slides.forEach((s,i)=>{const a=document.createElement('a');a.href='#'+s.id;a.title='Slide '+(i+1);dots.appendChild(a);});
   const links=[...dots.children];
-  const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){const i=slides.indexOf(e.target);links.forEach(l=>l.classList.remove('active'));if(links[i])links[i].classList.add('active');}});},{threshold:.5});
+  const barSec=document.getElementById('barSec');
+  const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){const i=slides.indexOf(e.target);links.forEach(l=>l.classList.remove('active'));if(links[i])links[i].classList.add('active');const sn=e.target.querySelector('.s-num');if(barSec&&sn)barSec.textContent=sn.textContent;}});},{threshold:.5});
   slides.forEach(s=>io.observe(s));
 })();
 /* parallax on full-bleed images */

@@ -11,12 +11,7 @@ import {
   animate,
 } from 'framer-motion'
 import GLCanvas from './GLCanvas.jsx'
-
-import trimmer from './assets/trimmer.jpeg'
-import frambini from './assets/frambini.jpeg'
-import interior from './assets/interior.jpeg'
-import stool from './assets/stool.jpeg'
-import team from './assets/team.jpeg'
+import { content as C } from './content.js'
 
 const spring = { type: 'spring', stiffness: 260, damping: 22 }
 
@@ -82,12 +77,9 @@ function Loader({ onDone }) {
           <span>%</span>
         </div>
         <div className="loader-bar">
-          <motion.div
-            className="loader-fill"
-            style={{ scaleX: n / 100 }}
-          />
+          <motion.div className="loader-fill" style={{ scaleX: n / 100 }} />
         </div>
-        <div className="loader-label">qiiip studio — cargando</div>
+        <div className="loader-label">{C.brand} studio — cargando</div>
       </div>
     </motion.div>
   )
@@ -137,12 +129,19 @@ function Nav() {
       animate={{ y: 0, opacity: 1 }}
       transition={{ ...spring, delay: 0.3 }}
     >
-      <span className="logo">qiiip<i>®</i></span>
+      <span className="logo">
+        {C.brand}
+        <i>®</i>
+      </span>
       <div className="nav-links">
-        <a href="#trabajo">Trabajo</a>
-        <a href="#producto">Producto</a>
-        <a href="#estudio">Estudio</a>
-        <a href="#contacto" className="nav-cta">Hablemos</a>
+        {C.nav.map((l) => (
+          <a key={l.href} href={l.href}>
+            {l.label}
+          </a>
+        ))}
+        <a href={C.navCta.href} className="nav-cta">
+          {C.navCta.label}
+        </a>
       </div>
     </motion.nav>
   )
@@ -177,20 +176,32 @@ function KineticTitle({ text }) {
   )
 }
 
-function Battery() {
+function Tagline({ text, highlight }) {
+  if (!highlight || !text.includes(highlight)) return <>{text}</>
+  const [before, after] = text.split(highlight)
+  return (
+    <>
+      {before}
+      <em>{highlight}</em>
+      {after}
+    </>
+  )
+}
+
+function Battery({ to }) {
   const ref = useRef(null)
   const [pct, setPct] = useState(0)
   useEffect(() => {
-    const c = animate(0, 85, {
+    const c = animate(0, to, {
       duration: 2.4,
       delay: 1.1,
       ease: 'easeOut',
       onUpdate: (v) => setPct(Math.round(v)),
     })
     return () => c.stop()
-  }, [])
+  }, [to])
   return (
-    <div className="battery hot" title="Como en el producto: 85%">
+    <div className="battery hot">
       <span className="battery-lock">🔒</span>
       <span className="battery-num">{pct}</span>
       <span className="battery-pct">%</span>
@@ -225,6 +236,8 @@ function Hero() {
     animate(ry, 0, spring)
   }
 
+  const h = C.hero
+
   return (
     <section className="hero" ref={ref}>
       <GLCanvas className="hero-gl" />
@@ -242,10 +255,10 @@ function Hero() {
             animate={{ scale: [1, 1.7, 1], opacity: [1, 0.4, 1] }}
             transition={{ duration: 1.6, repeat: Infinity }}
           />
-          estudio de diseño & movimiento
+          {h.eyebrow}
         </motion.div>
 
-        <KineticTitle text="qiiip" />
+        <KineticTitle text={h.title} />
 
         <motion.p
           className="tagline"
@@ -253,9 +266,7 @@ function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.9, duration: 0.7 }}
         >
-          Diseñamos objetos, marcas y espacios que se{' '}
-          <em>mueven con intención</em>. Producto industrial, CGI, dirección de
-          arte y experiencias digirales — renderizadas en tiempo real.
+          <Tagline text={h.tagline} highlight={h.taglineHighlight} />
         </motion.p>
 
         <motion.div
@@ -265,10 +276,10 @@ function Hero() {
           transition={{ delay: 1.1, duration: 0.7 }}
         >
           <Magnetic className="btn primary" onClick={() => scrollTo('trabajo')}>
-            Ver el trabajo →
+            {h.ctaPrimary}
           </Magnetic>
           <Magnetic className="btn ghost" onClick={() => scrollTo('producto')}>
-            Producto interactivo
+            {h.ctaSecondary}
           </Magnetic>
         </motion.div>
       </motion.div>
@@ -287,12 +298,12 @@ function Hero() {
           className="hero-product-inner"
           style={{ rotateX: rx, rotateY: ry, transformPerspective: 1000 }}
         >
-          <img src={trimmer} alt="qiiip Edge — recortadora de precisión" />
+          <img src={h.image} alt={`${C.brand} — producto`} />
           <div className="hero-product-glow" />
         </motion.div>
-        <Battery />
-        <span className="hero-tag hero-tag-a">Edge · 01</span>
-        <span className="hero-tag hero-tag-b">aleación · 60fps</span>
+        <Battery to={h.batteryTo} />
+        <span className="hero-tag hero-tag-a">{h.tagA}</span>
+        <span className="hero-tag hero-tag-b">{h.tagB}</span>
       </motion.div>
 
       <motion.div
@@ -300,7 +311,7 @@ function Hero() {
         animate={{ y: [0, 8, 0], opacity: [0.4, 1, 0.4] }}
         transition={{ duration: 2, repeat: Infinity }}
       >
-        desliza
+        {h.scrollHint}
       </motion.div>
     </section>
   )
@@ -314,19 +325,9 @@ function scrollTo(id) {
 /* Marquee                                                              */
 /* ------------------------------------------------------------------ */
 function Marquee() {
-  const items = [
-    'producto industrial',
-    'cgi & 3d',
-    'dirección de arte',
-    'packaging',
-    'identidad',
-    'motion',
-    'espacios',
-    'web',
-  ]
   const Track = () => (
     <div className="marquee-track-inner">
-      {items.map((w, i) => (
+      {C.marquee.map((w, i) => (
         <span key={i}>
           {w} <b>✦</b>
         </span>
@@ -350,44 +351,6 @@ function Marquee() {
 /* ------------------------------------------------------------------ */
 /* Horizontal scroll gallery                                            */
 /* ------------------------------------------------------------------ */
-const WORKS = [
-  {
-    img: trimmer,
-    idx: '01',
-    title: 'Edge',
-    cat: 'Producto industrial',
-    text: 'Recortadora de precisión. Cuerpo en aleación, dial mecanizado y lectura digital. Atada al detalle.',
-  },
-  {
-    img: frambini,
-    idx: '02',
-    title: 'Frambini',
-    cat: 'Packaging & CGI',
-    text: 'Bodegón ultrarrealista: malta fresca, hielo cristalino y condensación renderizada cuadro a cuadro.',
-  },
-  {
-    img: interior,
-    idx: '03',
-    title: 'Sesann',
-    cat: 'Editorial de espacio',
-    text: 'Dirección de arte para mobiliario: cuero coñac, luz cálida y composición editorial impecable.',
-  },
-  {
-    img: stool,
-    idx: '04',
-    title: 'Bind',
-    cat: 'Estudio de material',
-    text: 'Roble macizo y cuerda acid-green. Una exploración de tensión, nudo y contraste cromático.',
-  },
-  {
-    img: team,
-    idx: '05',
-    title: 'Wise Up',
-    cat: 'Marca & personas',
-    text: 'Sistema de marca para un colectivo creativo. Retrato cenital del equipo como pieza central.',
-  },
-]
-
 function HorizontalGallery() {
   const ref = useRef(null)
   const trackRef = useRef(null)
@@ -418,20 +381,20 @@ function HorizontalGallery() {
       className="hgal"
       id="trabajo"
       ref={ref}
-      style={{ height: `${WORKS.length * 95 + 40}vh` }}
+      style={{ height: `${C.works.length * 95 + 40}vh` }}
     >
       <div className="hgal-sticky">
         <div className="hgal-head">
-          <span className="kicker">/ trabajo seleccionado</span>
-          <h2>Hecho para moverse.</h2>
+          <span className="kicker">{C.worksKicker}</span>
+          <h2>{C.worksTitle}</h2>
         </div>
         <motion.div className="hgal-track" style={{ x }} ref={trackRef}>
-          {WORKS.map((w, i) => (
-            <Panel key={w.idx} w={w} i={i} progress={scrollYProgress} />
+          {C.works.map((w) => (
+            <Panel key={w.idx} w={w} progress={scrollYProgress} />
           ))}
           <div className="hgal-end">
             <span>scroll</span>
-            <h3>seguimos →</h3>
+            <h3>{C.worksEnd}</h3>
           </div>
         </motion.div>
       </div>
@@ -439,8 +402,7 @@ function HorizontalGallery() {
   )
 }
 
-function Panel({ w, i, progress }) {
-  // gentle counter-parallax on the image inside each panel
+function Panel({ w, progress }) {
   const imgX = useTransform(progress, [0, 1], [40, -40])
   return (
     <article className="panel hot">
@@ -478,6 +440,7 @@ function Reveal({ children, delay = 0, className = '' }) {
 /* Interactive product configurator                                     */
 /* ------------------------------------------------------------------ */
 function Product() {
+  const P = C.product
   const [len, setLen] = useState(3.0)
   const [bat, setBat] = useState(85)
   const frame = useRef(null)
@@ -509,12 +472,9 @@ function Product() {
   return (
     <section className="product" id="producto">
       <Reveal>
-        <span className="kicker">/ producto interactivo</span>
-        <h2 className="section-title">Configura el Edge.</h2>
-        <p className="section-sub">
-          Mueve el cursor sobre la pieza para iluminarla. Ajusta el largo de
-          corte y la carga — todo responde en vivo.
-        </p>
+        <span className="kicker">{P.kicker}</span>
+        <h2 className="section-title">{P.title}</h2>
+        <p className="section-sub">{P.sub}</p>
       </Reveal>
 
       <div className="product-grid">
@@ -529,8 +489,8 @@ function Product() {
           transition={{ duration: 0.8 }}
         >
           <motion.img
-            src={trimmer}
-            alt="qiiip Edge"
+            src={P.image}
+            alt={P.title}
             style={{ rotateX: rx, rotateY: ry, transformPerspective: 1000 }}
           />
           <motion.div className="product-spot" style={{ background: mask }} />
@@ -544,7 +504,7 @@ function Product() {
         <div className="product-controls">
           <div className="ctrl">
             <div className="ctrl-top">
-              <label>Largo de corte</label>
+              <label>{P.lengthLabel}</label>
               <span className="ctrl-val">{len.toFixed(1)} mm</span>
             </div>
             <div className="ctrl-bars">
@@ -570,7 +530,7 @@ function Product() {
 
           <div className="ctrl">
             <div className="ctrl-top">
-              <label>Carga de batería</label>
+              <label>{P.batteryLabel}</label>
               <span className="ctrl-val">{bat}%</span>
             </div>
             <div className="ring-row">
@@ -604,12 +564,7 @@ function Product() {
           </div>
 
           <div className="spec-row">
-            {[
-              ['Motor', '10.000 rpm'],
-              ['Autonomía', '90 min'],
-              ['Carga', 'USB-C'],
-              ['Resist.', 'IPX7'],
-            ].map(([k, v]) => (
+            {P.specs.map(([k, v]) => (
               <div className="spec" key={k}>
                 <span>{k}</span>
                 <b>{v}</b>
@@ -626,21 +581,19 @@ function Product() {
 /* Full-bleed generative film section                                   */
 /* ------------------------------------------------------------------ */
 function Film() {
+  const F = C.film
   return (
     <section className="film">
       <GLCanvas className="film-gl" intensity={1.4} />
       <div className="film-overlay">
         <Reveal>
-          <span className="kicker light">/ render en tiempo real</span>
+          <span className="kicker light">{F.kicker}</span>
           <h2>
-            No es un vídeo.
+            {F.titleLine1}
             <br />
-            Es código dibujando luz.
+            {F.titleLine2}
           </h2>
-          <p>
-            Este fondo es un shader de fragmentos ejecutándose en tu GPU, ahora
-            mismo, a 60fps. Mueve el cursor — la luz te sigue.
-          </p>
+          <p>{F.text}</p>
         </Reveal>
       </div>
     </section>
@@ -668,20 +621,15 @@ function Counter({ to, suffix = '' }) {
 }
 
 function Stats() {
-  const data = [
-    { to: 120, suffix: '+', label: 'proyectos entregados' },
-    { to: 14, suffix: '', label: 'premios de diseño' },
-    { to: 60, suffix: 'fps', label: 'en tiempo real' },
-    { to: 9, suffix: '', label: 'países' },
-  ]
+  const S = C.stats
   return (
     <section className="block" id="estudio">
       <Reveal>
-        <span className="kicker">/ el estudio</span>
-        <h2 className="section-title">En cifras.</h2>
+        <span className="kicker">{S.kicker}</span>
+        <h2 className="section-title">{S.title}</h2>
       </Reveal>
       <div className="stats">
-        {data.map((s, i) => (
+        {S.items.map((s, i) => (
           <Reveal key={s.label} delay={i * 0.1}>
             <div className="stat hot">
               <div className="value">
@@ -701,26 +649,17 @@ function Stats() {
 /* ------------------------------------------------------------------ */
 function Playground() {
   const area = useRef(null)
-  const toys = [
-    { label: 'Edge', bg: 'linear-gradient(135deg,#c6f73f,#5fa30f)' },
-    { label: '3D', bg: 'linear-gradient(135deg,#1e1e1e,#000)' },
-    { label: 'CGI', bg: 'linear-gradient(135deg,#f472b6,#be185d)' },
-    { label: 'Art', bg: 'linear-gradient(135deg,#22d3ee,#0e7490)' },
-    { label: 'Web', bg: 'linear-gradient(135deg,#fbbf24,#b45309)' },
-  ]
+  const PG = C.playground
   return (
     <section className="block">
       <Reveal>
-        <span className="kicker">/ tócalo</span>
-        <h2 className="section-title">Física real, no vídeo.</h2>
-        <p className="section-sub">
-          Arrastra las fichas. Rebotan con resortes y respetan los límites del
-          lienzo.
-        </p>
+        <span className="kicker">{PG.kicker}</span>
+        <h2 className="section-title">{PG.title}</h2>
+        <p className="section-sub">{PG.sub}</p>
       </Reveal>
       <Reveal delay={0.1}>
         <div className="playground hot" ref={area}>
-          {toys.map((t, i) => (
+          {PG.toys.map((t, i) => (
             <motion.div
               key={i}
               className="toy"
@@ -746,18 +685,24 @@ function Playground() {
 /* Footer                                                               */
 /* ------------------------------------------------------------------ */
 function Footer() {
+  const F = C.footer
   return (
     <footer id="contacto">
       <Reveal>
-        <span className="kicker center">/ hablemos</span>
-        <div className="footer-big">qiiip</div>
-        <Magnetic className="btn primary big">
-          francisco@qiiip.com
+        <span className="kicker center">{F.kicker}</span>
+        <div className="footer-big">{F.big}</div>
+        <Magnetic
+          className="btn primary big"
+          onClick={() => (window.location.href = `mailto:${F.email}`)}
+        >
+          {F.email}
         </Magnetic>
       </Reveal>
       <div className="footer-bottom">
-        <span>© {new Date().getFullYear()} qiiip studio</span>
-        <span>React · Vite · framer-motion · WebGL</span>
+        <span>
+          © {new Date().getFullYear()} {C.brand} studio
+        </span>
+        <span>{F.credits}</span>
       </div>
     </footer>
   )

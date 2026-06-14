@@ -448,7 +448,7 @@ function Product() {
   const sy = useMotionValue(45)
   const maskX = useSpring(sx, { stiffness: 200, damping: 25 })
   const maskY = useSpring(sy, { stiffness: 200, damping: 25 })
-  const mask = useMotionTemplate`radial-gradient(circle 220px at ${maskX}% ${maskY}%, rgba(198,247,63,0.32), transparent 70%)`
+  const mask = useMotionTemplate`radial-gradient(circle 220px at ${maskX}% ${maskY}%, rgba(52,211,153,0.34), transparent 70%)`
 
   const rx = useMotionValue(0)
   const ry = useMotionValue(0)

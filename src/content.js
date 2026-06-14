@@ -151,7 +151,7 @@ export const content = {
     title: 'Física real, no vídeo.',
     sub: 'Arrastra las fichas. Rebotan con resortes y respetan los límites del lienzo.',
     toys: [
-      { label: 'Edge', bg: 'linear-gradient(135deg,#c6f73f,#5fa30f)' },
+      { label: 'Edge', bg: 'linear-gradient(135deg,#34d399,#059669)' },
       { label: '3D', bg: 'linear-gradient(135deg,#1e1e1e,#000)' },
       { label: 'CGI', bg: 'linear-gradient(135deg,#f472b6,#be185d)' },
       { label: 'Art', bg: 'linear-gradient(135deg,#22d3ee,#0e7490)' },

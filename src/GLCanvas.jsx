@@ -45,10 +45,10 @@ void main(){
                 fbm(p * 1.4 + 2.0 * q + vec2(8.3, 2.8) - m));
   float f = fbm(p * 1.4 + 2.6 * r);
 
-  vec3 dark = vec3(0.020, 0.035, 0.022);
-  vec3 deep = vec3(0.075, 0.180, 0.050);
-  vec3 lime = vec3(0.560, 0.870, 0.205);
-  vec3 glow = vec3(0.820, 0.980, 0.380);
+  vec3 dark = vec3(0.014, 0.032, 0.028);
+  vec3 deep = vec3(0.020, 0.150, 0.110);
+  vec3 lime = vec3(0.204, 0.827, 0.600);
+  vec3 glow = vec3(0.540, 0.960, 0.780);
 
   vec3 col = mix(dark, deep, smoothstep(-0.25, 0.65, f));
   col = mix(col, lime, smoothstep(0.25, 0.95, f * f));
@@ -80,7 +80,7 @@ export default function GLCanvas({ className = '', intensity = 1 }) {
       canvas.getContext('experimental-webgl')
     if (!gl) {
       canvas.style.background =
-        'radial-gradient(circle at 30% 20%, #1a2e10, #060807)'
+        'radial-gradient(circle at 30% 20%, #0c3d2e, #05080a)'
       return
     }
 

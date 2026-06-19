@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HONE · Pure as the hive itself</title>
+  <meta name="description" content="HONE — miel de flores silvestres cruda, extraída en frío y de origen único. Nada añadido. Nada quitado." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Baloo+2:wght@400..800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ======================= NAV ======================= -->
+  <header class="nav" id="nav">
+    <a href="#top" class="nav__logo">HONE</a>
+
+    <nav class="nav__links" aria-label="Principal">
+      <a href="#collection">
+        <span class="nav__label">collection</span>
+        <span class="nav__sub">wildflower honeys</span>
+      </a>
+      <a href="#promise">
+        <span class="nav__label">our promise</span>
+        <span class="nav__sub">raw &amp; pure</span>
+      </a>
+      <a href="#story">
+        <span class="nav__label">story</span>
+        <span class="nav__sub">from the meadow</span>
+      </a>
+    </nav>
+
+    <a href="#collection" class="btn-ghost">BUY NOW</a>
+    <button class="nav__burger" aria-label="Menú" id="burger"><span></span><span></span><span></span></button>
+  </header>
+
+  <!-- ======================= HERO ======================= -->
+  <section class="hero" id="top">
+    <video class="hero__video" autoplay muted loop playsinline poster="assets/img/hero-poster.jpg">
+      <source src="assets/video/hero-bee.mp4" type="video/mp4" />
+    </video>
+    <div class="hero__veil"></div>
+
+    <!-- floating clouds -->
+    <span class="cloud cloud--1"></span>
+    <span class="cloud cloud--2"></span>
+    <span class="cloud cloud--3"></span>
+
+    <div class="hero__inner">
+      <h1 class="hero__title">
+        <span class="line"><span>Pure as</span></span>
+        <span class="line"><span>the hive</span></span>
+        <span class="line"><span>itself.</span></span>
+      </h1>
+
+      <p class="hero__sub">
+        Raw wildflower honey, cold-extracted and single-origin.<br />
+        Nothing added. Nothing taken away.
+      </p>
+
+      <a href="#collection" class="btn-honey">
+        <span>SHOP HONEY</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+
+    <!-- social engagement rail -->
+    <aside class="rail" aria-hidden="true">
+      <button class="rail__btn rail__btn--heart">
+        <svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-10-9.2C.3 8.6 1.7 5 5 5c2 0 3.2 1.2 4 2.4C9.8 6.2 11 5 13 5c3.3 0 4.7 3.6 3 6.8C19.5 16.4 12 21 12 21z"/></svg>
+      </button>
+      <span class="rail__count">195</span>
+      <button class="rail__btn">
+        <svg viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-5.2A8 8 0 1 1 21 12z"/></svg>
+      </button>
+      <span class="rail__count">36</span>
+      <button class="rail__btn">
+        <svg viewBox="0 0 24 24"><path d="M17 2l4 4-4 4M21 6H9a5 5 0 0 0-5 5v1M7 22l-4-4 4-4M3 18h12a5 5 0 0 0 5-5v-1"/></svg>
+      </button>
+      <span class="rail__count">14</span>
+    </aside>
+
+    <div class="hero__scroll">scroll <span></span></div>
+  </section>
+
+  <!-- ======================= MARQUEE ======================= -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee__track">
+      <span>RAW</span><b>✿</b><span>SINGLE-ORIGIN</span><b>✿</b><span>COLD-EXTRACTED</span><b>✿</b><span>UNFILTERED</span><b>✿</b><span>ALIVE WITH ENZYMES</span><b>✿</b>
+      <span>RAW</span><b>✿</b><span>SINGLE-ORIGIN</span><b>✿</b><span>COLD-EXTRACTED</span><b>✿</b><span>UNFILTERED</span><b>✿</b><span>ALIVE WITH ENZYMES</span><b>✿</b>
+    </div>
+  </div>
+
+  <!-- ======================= COLLECTION ======================= -->
+  <section class="collection" id="collection">
+    <div class="section-head">
+      <p class="eyebrow">the collection</p>
+      <h2 class="section-title">Honey for every<br /><em>kind of</em> craving.</h2>
+    </div>
+
+    <div class="cards">
+      <article class="card reveal">
+        <div class="card__media card__media--a">
+          <span class="card__tag">best seller</span>
+          <div class="jar">🍯</div>
+        </div>
+        <div class="card__body">
+          <h3>Meadow &amp; Clover Blend</h3>
+          <p>Soft, golden and floral. Our everyday jar.</p>
+          <div class="card__foot"><span class="price">$18</span><button class="card__add">Add +</button></div>
+        </div>
+      </article>
+
+      <article class="card reveal card--center">
+        <div class="card__media card__media--b">
+          <span class="card__tag card__tag--gold">reserve</span>
+          <div class="jar">🍯</div>
+        </div>
+        <div class="card__body">
+          <h3>Forest Reserve</h3>
+          <p>Deep, dark and resinous. Cold mountain bloom.</p>
+          <div class="card__foot"><span class="price">$26</span><button class="card__add">Add +</button></div>
+        </div>
+      </article>
+
+      <article class="card reveal">
+        <div class="card__media card__media--c">
+          <span class="card__tag">limited</span>
+          <div class="jar">🍯</div>
+        </div>
+        <div class="card__body">
+          <h3>Artisan Collection</h3>
+          <p>A trio of single-meadow honeys, hand-boxed.</p>
+          <div class="card__foot"><span class="price">$42</span><button class="card__add">Add +</button></div>
+        </div>
+      </article>
+
+      <article class="card reveal">
+        <div class="card__media card__media--d">
+          <span class="card__tag">unfiltered</span>
+          <div class="jar">🍯</div>
+        </div>
+        <div class="card__body">
+          <h3>Raw Harvest</h3>
+          <p>Straight from the comb. Crystals and all.</p>
+          <div class="card__foot"><span class="price">$22</span><button class="card__add">Add +</button></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ======================= STORY (editorial) ======================= -->
+  <section class="story" id="story">
+    <div class="story__bg"></div>
+    <p class="story__text reveal">
+      Every jar traced <em>to a single meadow.</em><br />
+      <strong>Cold-extracted,</strong> <em>alive</em> with enzymes.<br />
+      Nothing but <span class="muted">pure, raw,</span> unfiltered.
+    </p>
+  </section>
+
+  <!-- ======================= PROMISE ======================= -->
+  <section class="promise" id="promise">
+    <div class="section-head section-head--center">
+      <p class="eyebrow">our promise</p>
+      <h2 class="section-title">From the hive,<br />nothing in between.</h2>
+    </div>
+
+    <div class="promise__grid">
+      <div class="promise__item reveal">
+        <div class="promise__icon">🐝</div>
+        <h3>Single-origin</h3>
+        <p>Each batch comes from one meadow, one season, one swarm. Traceable to the flower.</p>
+      </div>
+      <div class="promise__item reveal">
+        <div class="promise__icon">🍯</div>
+        <h3>Cold-extracted</h3>
+        <p>Never heated, never pasteurized. The enzymes and pollen stay exactly as the bees made them.</p>
+      </div>
+      <div class="promise__item reveal">
+        <div class="promise__icon">🌼</div>
+        <h3>Truly raw</h3>
+        <p>Unfiltered and unblended. What settles in the jar is nature, not a recipe.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= NEWSLETTER / CTA ======================= -->
+  <section class="cta">
+    <div class="cta__card">
+      <span class="cta__bee">🐝</span>
+      <h2>Join the swarm.</h2>
+      <p>Early harvests, tiny batches and honey notes — straight to your inbox.</p>
+      <form class="cta__form" onsubmit="return false;">
+        <input type="email" placeholder="your@email.com" aria-label="Email" required />
+        <button type="submit">Get sweet</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ======================= FOOTER ======================= -->
+  <footer class="footer">
+    <div class="footer__top">
+      <a href="#top" class="footer__logo">HONE</a>
+      <nav class="footer__nav">
+        <a href="#collection">Collection</a>
+        <a href="#promise">Our promise</a>
+        <a href="#story">Story</a>
+        <a href="#top">Stockists</a>
+      </nav>
+    </div>
+    <div class="footer__bottom">
+      <span>© 2026 HONE · Pure as the hive itself.</span>
+      <span>Raw · Single-origin · Cold-extracted</span>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

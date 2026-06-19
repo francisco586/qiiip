@@ -28,6 +28,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx vite build --base=/qiiip/
+      - name: Include HONE static site at /qiiip/hone/
+        run: cp -r hone dist/hone
       - uses: actions/configure-pages@v5
         with:
           enablement: true

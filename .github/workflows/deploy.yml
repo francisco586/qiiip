@@ -30,6 +30,8 @@ jobs:
       - run: npx vite build --base=/qiiip/
       - name: Include HONE static site at /qiiip/hone/
         run: cp -r hone dist/hone
+      - name: Include Studio 5277 flipbook at /qiiip/studio5277/
+        run: cp -r studio5277 dist/studio5277
       - uses: actions/configure-pages@v5
         with:
           enablement: true
